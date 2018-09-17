@@ -1,0 +1,19 @@
+
+schema {
+  query: Query
+}
+
+type Query {
+  car(id: ID!): Car
+}
+
+type Car {
+  id: ID!
+  name: String
+  color: String
+  wheels: Int
+}
+
+type Fleet {
+  cars:[Car]
+}

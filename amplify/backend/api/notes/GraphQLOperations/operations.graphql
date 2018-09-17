@@ -1,0 +1,9 @@
+query getTask($id: ID!) {
+  getTask(id: $id) {
+    id
+    title
+    status
+    thingName
+  }
+}
+

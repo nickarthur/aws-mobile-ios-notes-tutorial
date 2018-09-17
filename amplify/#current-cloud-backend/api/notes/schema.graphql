@@ -1,0 +1,24 @@
+type Task
+  @model
+  @auth(
+    rules: [
+      { allow: groups, groups: ["Developers"], mutations: [create, update, delete] }
+      { allow: groups, groups: ["Managers"], mutations: [create, update, delete] }
+      { allow: groups, groups: ["Photographers"], queries: [get, list] }
+    ]
+  ) {
+  id: ID!
+  title: String!
+  description: String
+  status: String
+  thingName: String
+}
+type PrivateNote
+  @model
+  @auth(rules: [{allow: owner}])
+{
+  id: ID!
+  content: String!
+  bornOnDate: String!
+  reason: String
+}

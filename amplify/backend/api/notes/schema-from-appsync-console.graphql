@@ -1,0 +1,172 @@
+﻿type ModelPrivateNoteConnection {
+  items: [PrivateNote]
+  nextToken: String
+}
+
+type ModelTaskConnection {
+  items: [Task]
+  nextToken: String
+}
+
+type Mutation {
+  createPrivateNote(input: CreatePrivateNoteInput!): PrivateNote
+  createTask(input: CreateTaskInput!): Task
+  deletePrivateNote(input: DeletePrivateNoteInput!): PrivateNote
+  deleteTask(input: DeleteTaskInput!): Task
+  updatePrivateNote(input: UpdatePrivateNoteInput!): PrivateNote
+  updateTask(input: UpdateTaskInput!): Task
+}
+
+type PrivateNote {
+  bornOnDate: String!
+  content: String!
+  id: ID!
+  reason: String
+}
+
+type Query {
+  getPrivateNote(id: ID!): PrivateNote
+  getTask(id: ID!): Task
+  listPrivateNotes(filter: ModelPrivateNoteFilterInput, limit: Int, nextToken: String): ModelPrivateNoteConnection
+  listTasks(filter: ModelTaskFilterInput, limit: Int, nextToken: String): ModelTaskConnection
+}
+
+type Subscription {
+  onCreatePrivateNote: PrivateNote
+    @aws_subscribe(mutations:["createPrivateNote"])
+  onCreateTask: Task
+    @aws_subscribe(mutations:["createTask"])
+  onDeletePrivateNote: PrivateNote
+    @aws_subscribe(mutations:["deletePrivateNote"])
+  onDeleteTask: Task
+    @aws_subscribe(mutations:["deleteTask"])
+  onUpdatePrivateNote: PrivateNote
+    @aws_subscribe(mutations:["updatePrivateNote"])
+  onUpdateTask: Task
+    @aws_subscribe(mutations:["updateTask"])
+}
+
+type Task {
+  description: String
+  id: ID!
+  status: String
+  thingName: String
+  title: String!
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+input CreatePrivateNoteInput {
+  bornOnDate: String!
+  content: String!
+  reason: String
+}
+
+input CreateTaskInput {
+  description: String
+  status: String
+  thingName: String
+  title: String!
+}
+
+input DeletePrivateNoteInput {
+  id: ID
+}
+
+input DeleteTaskInput {
+  id: ID
+}
+
+input ModelBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input ModelFloatFilterInput {
+  between: [Float]
+  contains: Float
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+  notContains: Float
+}
+
+input ModelIDFilterInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+}
+
+input ModelIntFilterInput {
+  between: [Int]
+  contains: Int
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+  notContains: Int
+}
+
+input ModelPrivateNoteFilterInput {
+  and: [ModelPrivateNoteFilterInput]
+  bornOnDate: ModelStringFilterInput
+  content: ModelStringFilterInput
+  id: ModelIDFilterInput
+  not: ModelPrivateNoteFilterInput
+  or: [ModelPrivateNoteFilterInput]
+  reason: ModelStringFilterInput
+}
+
+input ModelStringFilterInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+}
+
+input ModelTaskFilterInput {
+  and: [ModelTaskFilterInput]
+  description: ModelStringFilterInput
+  id: ModelIDFilterInput
+  not: ModelTaskFilterInput
+  or: [ModelTaskFilterInput]
+  status: ModelStringFilterInput
+  thingName: ModelStringFilterInput
+  title: ModelStringFilterInput
+}
+
+input UpdatePrivateNoteInput {
+  bornOnDate: String
+  content: String
+  id: ID!
+  reason: String
+}
+
+input UpdateTaskInput {
+  description: String
+  id: ID!
+  status: String
+  thingName: String
+  title: String
+}

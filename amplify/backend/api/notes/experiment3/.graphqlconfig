@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "todo": {
+      "schemaPath": "todo.graphql"
+    }
+  }
+}
