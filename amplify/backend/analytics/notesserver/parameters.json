@@ -1,0 +1,11 @@
+{
+    "appName": "notesserver",
+    "roleName": "pinpointLambdaRole40603f1d",
+    "cloudWatchPolicyName": "cloudWatchPolicy40603f1d",
+    "pinpointPolicyName": "pinpointPolicy40603f1d",
+    "authPolicyName": "pinpoint_amplify_40603f1d",
+    "unauthPolicyName": "pinpoint_amplify_40603f1d",
+    "authRoleName": "noteserver-20180917030409-authRole",
+    "unauthRoleName": "noteserver-20180917030409-unauthRole",
+    "IAMPrefix": "983539135452"
+}

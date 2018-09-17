@@ -6,8 +6,8 @@
             "Outputs.UserPoolId"
         ]
     },
-    "schemaGraphql": "s3://noteserver-20180917030409-deployment/amplify-appsync-files/schema.graphql.1537180961093",
+    "schemaGraphql": "s3://noteserver-20180917030409-deployment/amplify-appsync-files/schema.graphql.1537193912909",
     "ResolverBucket": "noteserver-20180917030409-deployment",
     "ResolverRootKey": "amplify-appsync-files",
-    "DeploymentTimestamp": "1537180961093"
+    "DeploymentTimestamp": "1537193912909"
 }

@@ -84,7 +84,7 @@
 				"TemplateURL": "https://s3.amazonaws.com/noteserver-20180917030409-deployment/amplify-cfn-templates/auth/cognito3f03bbb0-cloudformation-template.yml",
 				"Parameters": {
 					"identityPoolName": "cognito3f03bbb0_identitypool_3f03bbb0",
-					"allowUnauthenticatedIdentities": false,
+					"allowUnauthenticatedIdentities": true,
 					"thirdPartyAuth": false,
 					"lambdaLogPolicy": "cognito3f03bbb0_lambda_log_policy",
 					"openIdLambdaRoleName": "cognito3f03bbb0_openid_lambda_role",
@@ -128,6 +128,23 @@
 				}
 			}
 		},
+		"analyticsnotesserver": {
+			"Type": "AWS::CloudFormation::Stack",
+			"Properties": {
+				"TemplateURL": "https://s3.amazonaws.com/noteserver-20180917030409-deployment/amplify-cfn-templates/analytics/pinpoint-cloudformation-template.json",
+				"Parameters": {
+					"appName": "notesserver",
+					"roleName": "pinpointLambdaRole40603f1d",
+					"cloudWatchPolicyName": "cloudWatchPolicy40603f1d",
+					"pinpointPolicyName": "pinpointPolicy40603f1d",
+					"authPolicyName": "pinpoint_amplify_40603f1d",
+					"unauthPolicyName": "pinpoint_amplify_40603f1d",
+					"authRoleName": "noteserver-20180917030409-authRole",
+					"unauthRoleName": "noteserver-20180917030409-unauthRole",
+					"IAMPrefix": "983539135452"
+				}
+			}
+		},
 		"apinotes": {
 			"Type": "AWS::CloudFormation::Stack",
 			"Properties": {
@@ -140,10 +157,10 @@
 							"Outputs.UserPoolId"
 						]
 					},
-					"schemaGraphql": "s3://noteserver-20180917030409-deployment/amplify-appsync-files/schema.graphql.1537180961093",
+					"schemaGraphql": "s3://noteserver-20180917030409-deployment/amplify-appsync-files/schema.graphql.1537193912909",
 					"ResolverBucket": "noteserver-20180917030409-deployment",
 					"ResolverRootKey": "amplify-appsync-files",
-					"DeploymentTimestamp": "1537180961093"
+					"DeploymentTimestamp": "1537193912909"
 				}
 			}
 		}

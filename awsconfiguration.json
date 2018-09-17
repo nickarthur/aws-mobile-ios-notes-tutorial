@@ -20,6 +20,17 @@
             "Region": "us-east-1"
         }
     },
+    "PinpointAnalytics": {
+        "Default": {
+            "AppId": "1aecf6bf0c6047a684f08816e65e93d7",
+            "Region": "us-east-1"
+        }
+    },
+    "PinpointTargeting": {
+        "Default": {
+            "Region": "us-east-1"
+        }
+    },
     "AppSync": {
         "Default": {
             "ApiUrl": "https://5wsfa532hzca3jzh3gvmesfcju.appsync-api.us-east-1.amazonaws.com/graphql",

@@ -1,0 +1,20 @@
+type Todo {
+  id: String!
+  name: String!
+  completed: Boolean
+}
+
+input TodoInputType {
+  name: String!
+  completed: Boolean
+}
+
+type Query {
+  todo(id: String!): Todo
+  todos: [Todo]
+}
+
+type Mutation {
+  update_todo(id: String!, todo: TodoInputType!): Todo
+  create_todo(todo: TodoInputType!): Todo
+}
