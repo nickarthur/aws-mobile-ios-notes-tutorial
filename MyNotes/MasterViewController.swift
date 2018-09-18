@@ -24,13 +24,19 @@ extension UISplitViewController {
 }
 
 class MasterViewController: UITableViewController {
+    
     var analyticsService: AnalyticsService? = nil
     var dataService : DataService? = nil
+    
     var detailViewController: DetailViewController? = nil
+    
     var addButton: UIBarButtonItem? = nil
+    
     var notes = [Note]() {
         didSet {
             DispatchQueue.main.async {
+                // reload the tableVIew when we
+                // set the notes property
                 self.tableView.reloadData()
             }
         }
@@ -50,44 +56,62 @@ class MasterViewController: UITableViewController {
         navigationItem.leftBarButtonItem = editButtonItem
 
         addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
+        
         navigationItem.rightBarButtonItem = addButton
+        
         if let split = splitViewController {
             let controllers = split.viewControllers
+            
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
+        
         super.viewWillAppear(animated)
         
         NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(noteChanged(notification:)), name: Notification.Name("NoteChangedIdentifier"), object: nil)
         
+        // add Pinpoint event entry when this ListView appears
         analyticsService?.recordEvent("StartListView", parameters: nil, metrics: nil)
+        
+        
+        // load notes from the backend dataservice
+        // on a background thread  when this view appears i.e. ...
         
         // Load the notes from the data service whenever we refresh
         DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
+            
             self.loadNotesFromDataService()
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        
         NotificationCenter.default.removeObserver(self, name: Notification.Name("NoteChangedIdentifier"), object: nil)
     }
     
     @objc func rotated() {
         if (UIDevice.current.orientation != .landscapeLeft && UIDevice.current.orientation != .landscapeRight) {
+            
             if tableView.indexPathForSelectedRow != nil {
                 self.performSegue(withIdentifier: "showDetail", sender: (Any).self)
             }
         }
     }
     
+    // handles adding notes  and edits
     @objc func noteChanged(notification: Notification) {
+        
         let note = notification.object as! Note
+        
         var index = notes.index(where: { n in n.id == note.id })
         if (index != nil) {
             notes[index!] = note
@@ -97,19 +121,25 @@ class MasterViewController: UITableViewController {
         }
         
         let indexPath = IndexPath(row: index!, section: 0)
+        
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
     }
 
     func loadNotesFromDataService() {
+        
         dataService?.loadNotes() { (notesFromNetwork, error) in
             if error == nil {
+                
                 if notesFromNetwork == nil {
                     self.notes = [Note]() // Clear the notes out
                 } else {
                     self.notes = notesFromNetwork!
                 }
             } else {
+                
+                // let Pinpoint know of Note loading error
                 self.analyticsService?.recordEvent("Error", parameters: ["op":"loadNotes"], metrics: nil)
+                
                 self.showErrorAlert(error?.localizedDescription ?? "Unknown data service error", title: "LoadNotes Error")
             }
         }
@@ -122,12 +152,15 @@ class MasterViewController: UITableViewController {
 
     @objc
     func insertNewObject(_ sender: Any) {
+        // inform Pinpoint of a note creation event
         analyticsService?.recordEvent("AddNewNote", parameters: nil, metrics: nil)
+        
         self.performSegue(withIdentifier: "showDetail", sender: sender)
     }
 
     // MARK: - Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "showDetail" {
             var note: Note? = nil
             
@@ -144,9 +177,13 @@ class MasterViewController: UITableViewController {
             }
             
             if (note != nil) {
+                
                 analyticsService?.recordEvent("StartDetailView", parameters: [ "id" : note!.id ?? "unknown" ], metrics: nil)
+                
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
+                
                 controller.setNoteDetail(note)
+                
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
@@ -177,19 +214,26 @@ class MasterViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             guard let noteId = notes[indexPath.row].id else {
+                
                 analyticsService?.recordEvent("Error", parameters: ["op":"swipeToDelete"], metrics: nil)
+                
                 showErrorAlert("Invalid note ID presented for swipe-to-delete", title: "Bad Error")
                 return
             }
             
             // Delete the note from the backend
             analyticsService?.recordEvent("DeleteNote", parameters: [ "id" : noteId ], metrics: nil)
+            
             dataService?.deleteNote(noteId) { (error) in
+                
                 if error == nil {
                     self.notes.remove(at: indexPath.row)
+                    
+                    // reload the tableView data on the main UI thread
                     DispatchQueue.main.async {
                         tableView.reloadData()
                     }
+                    
                     // If the detail view is showing the current note, remove it.
                     if let view = self.splitViewController {
                         if (view.displayMode == UISplitViewControllerDisplayMode.allVisible) {
@@ -202,6 +246,7 @@ class MasterViewController: UITableViewController {
                         }
                     }
                 } else {
+                    
                     self.analyticsService?.recordEvent("Error", parameters: ["op":"deleteNote"], metrics: nil)
                     self.showErrorAlert(error?.localizedDescription ?? "Unknown Error", title: "Row not removed")
                 }
@@ -211,9 +256,13 @@ class MasterViewController: UITableViewController {
     
     // Display the given error message as an alert pop-up
     func showErrorAlert(_ errorMessage: String, title: String?) {
+        
         let alertController = UIAlertController(title: title ?? "Error", message: errorMessage, preferredStyle: .alert)
+        
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        
         alertController.addAction(defaultAction)
+        
         present(alertController, animated: true, completion: nil)
     }
 }

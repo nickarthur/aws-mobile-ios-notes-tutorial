@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		59A7D8F458DE5840EDA323B0 /* Pods_MyNotes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E228592E2C5A8D1B974C1957 /* Pods_MyNotes.framework */; };
+		73D019F12151794E00FB73FF /* AWSAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D019F02151794E00FB73FF /* AWSAnalyticsService.swift */; };
 		73ED108F214FF365005BEFE9 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 73ED108E214FF364005BEFE9 /* awsconfiguration.json */; };
 		FB787ABB213474EB0055E420 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB787ABA213474EB0055E420 /* AnalyticsService.swift */; };
 		FB787ABD213475E00055E420 /* LocalAnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB787ABC213475E00055E420 /* LocalAnalyticsService.swift */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		05EE24AFA939C4CA1F1923C4 /* Pods-MyNotes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyNotes.release.xcconfig"; path = "Target Support Files/Pods-MyNotes/Pods-MyNotes.release.xcconfig"; sourceTree = "<group>"; };
+		73D019F02151794E00FB73FF /* AWSAnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSAnalyticsService.swift; sourceTree = "<group>"; };
 		73ED108E214FF364005BEFE9 /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = SOURCE_ROOT; };
 		7E3E0CFE1E4B095DF5C4743A /* Pods-MyNotes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyNotes.debug.xcconfig"; path = "Target Support Files/Pods-MyNotes/Pods-MyNotes.debug.xcconfig"; sourceTree = "<group>"; };
 		E228592E2C5A8D1B974C1957 /* Pods_MyNotes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyNotes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,6 +107,7 @@
 				FBA77B02213080FE001B5F22 /* MockDataService.swift */,
 				FB787ABA213474EB0055E420 /* AnalyticsService.swift */,
 				FB787ABC213475E00055E420 /* LocalAnalyticsService.swift */,
+				73D019F02151794E00FB73FF /* AWSAnalyticsService.swift */,
 			);
 			path = MyNotes;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				FBA77AEB21307BC2001B5F22 /* MasterViewController.swift in Sources */,
 				FB787ABD213475E00055E420 /* LocalAnalyticsService.swift in Sources */,
 				FBA77AE921307BC2001B5F22 /* AppDelegate.swift in Sources */,
+				73D019F12151794E00FB73FF /* AWSAnalyticsService.swift in Sources */,
 				FBA77AFF21307F6C001B5F22 /* Note.swift in Sources */,
 				FBA77B0121307F90001B5F22 /* DataService.swift in Sources */,
 				FB787ABB213474EB0055E420 /* AnalyticsService.swift in Sources */,

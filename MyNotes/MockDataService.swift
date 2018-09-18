@@ -18,54 +18,76 @@ import Foundation
  */
 class MockDataService : DataService {
     
+    // notes collection
     static var notes = [Note]()
     
     // Initialize 20 notes for mocking purposes.
     init() {
         for index in 1...20 {
             let note = Note(id: UUID().uuidString, title: "Note \(index)", content: "This is note \(index)")
+            
+            // reference to static property on heap -- defined above
             MockDataService.notes.append(note)
         }
     }
     
+    // NOTE THE GETTER IN THE DATA SERVICE PATTERN
+    
     // Get a specific note by noteId
     func getNote(_ noteId: String, onCompletion: @escaping (Note?, Error?) -> Void) {
+        
         for (_, element) in MockDataService.notes.enumerated() {
             if (element.id == noteId) {
                 onCompletion(element, nil)
-                return
+                return  // early return
             }
         }
+        
+        // call the completion handler with error if
+        // we haven't already returned with valid data
         onCompletion(nil, DataServiceError.NoSuchNote)
     }
     
     // Load all the notes
     func loadNotes(onCompletion: @escaping ([Note]?, Error?) -> Void) {
+        // immediately call the handler we're just a "MOCK"
         onCompletion(MockDataService.notes, nil)
     }
     
     // Update a note (either create or update)
     func updateNote(_ note: Note, onCompletion: @escaping (Note?, Error?) -> Void) {
+        
+        // this is a create operation
         if (note.id == nil) {
             let newNote = Note(id: UUID().uuidString, title: note.title, content: note.content)
+            
             MockDataService.notes.append(newNote)
+            
+            // pass the newly updated note back to the caller
             onCompletion(newNote, nil)
         } else {
+            
+            // find the note and update it
             for (index, element) in MockDataService.notes.enumerated() {
                 if (element.id == note.id) {
                     MockDataService.notes[index] = note
+                    // return the updated note
                     onCompletion(note, nil)
                     return
                 }
             }
+            // if we get here, we have an error
             onCompletion(nil, DataServiceError.NoSuchNote)
         }
     }
     
     // Delete a note from the service
     func deleteNote(_ noteId: String, onCompletion: @escaping (Error?) -> Void) {
+        
         var index = -1
+        
         for (listIndex, element) in MockDataService.notes.enumerated() {
+            // found one so remember teh index to delete
             if (element.id == noteId) {
                 index = listIndex
             }
@@ -73,6 +95,7 @@ class MockDataService : DataService {
         if (index == -1) {
             onCompletion(DataServiceError.NoSuchNote)
         } else {
+            // remove the item
             MockDataService.notes.remove(at: index)
             onCompletion(nil)
         }

@@ -34,14 +34,19 @@ class LocalAnalyticsService : AnalyticsService {
                 event += ",\"\(key)=\(formattedValue)"
             }
         }
+        // remove the leading comma
         if (event.count > 0) {
             event = String(event.dropFirst(1))
         }
         
         let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
         let currentTime = Date()
+        // date formatter string method takes date
+        // and returns string
         let dateString = df.string(from: currentTime)
+        
         print("\(dateString) \(eventName):\(event)")
     }
 }

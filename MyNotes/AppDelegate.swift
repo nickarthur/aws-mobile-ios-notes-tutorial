@@ -21,14 +21,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var analyticsService: AnalyticsService?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
         // Override point for customization after application launch.
         let splitViewController = window!.rootViewController as! UISplitViewController
+        
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
         splitViewController.delegate = self
         
         // Initialize the analytics service
-        analyticsService = LocalAnalyticsService()
+        
+        // GOOD FOR DEBUG
+        //analyticsService = LocalAnalyticsService()
+        
+        // using AWS Pinpoint
+        analyticsService = AWSAnalyticsService()
         
         // Initialize the data service
         dataService = MockDataService()
